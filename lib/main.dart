@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
 //  List<String> _urls = ["one", "two", "three"];
 
   static Stream<DocumentSnapshot> ds = Firestore.instance.collection("blacklist").document("eric123").snapshots(); //['first url', 'second url', 'third url'];
-  List<String> _urls = ds.toList();
+  List<String> _urls = ds.toList() as List<String>;
 
   void onPressed() {
     setState(() {
@@ -133,9 +133,6 @@ class _MyAppState extends State<MyApp> {
                             ),).toList(),)
                         ]
                     ),
-//
-
-
                   )
               ),
             )
