@@ -33,7 +33,7 @@ void main() => runApp(new MyApp());
 
 class MyApp extends StatefulWidget{
   @override
-    State<StatefulWidget> createState() {
+  State<StatefulWidget> createState() {
     // TODO: implement createState
     return _MyAppState();
   }
@@ -43,13 +43,48 @@ class _MyAppState extends State<MyApp> {
 //  List<String> _urls = ["one", "two", "three"];
 
   static Stream<DocumentSnapshot> ds = Firestore.instance.collection("blacklist").document("eric123").snapshots(); //['first url', 'second url', 'third url'];
-  List<String> _urls = ds.toList() as List<String>;
+  List<String> _urls = [];
+
+  Map<String, dynamic> docData;
+
+  @override
+  void initState() {
+    super.initState();
+    Firestore.instance.collection("blacklists").document("eric123").get().then((ds){
+      print(ds.documentID);
+      print(ds.data);
+      docData = ds.data;
+      setState(() {
+        _urls = [];
+        for (var url in docData["list"]) {
+          _urls.add(url);
+        }
+        print("updated url: " + _urls.toString());
+      });
+    }).catchError((e){
+      print("failed to get the url" + e.toString());
+    });
+
+
+  }
+
+  void updateUrlList() {
+    List<dynamic> list = [];
+
+    docData['list'] = _urls;
+    Firestore.instance.collection("blacklists").document("eric123").updateData(docData).then((v){
+      print("successfully updated it.");
+    }).catchError((e){
+      print("failed to update it");
+    });
+  }
 
   void onPressed() {
     setState(() {
       _urls.add(_text);
 //      print(_urls);
     });
+    updateUrlList();
   }
 
   void onChanged(String value){
@@ -57,6 +92,7 @@ class _MyAppState extends State<MyApp> {
       _text = value;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +114,10 @@ class _MyAppState extends State<MyApp> {
                           new Text(
                             'Add to the blacklist by entering a URL below',
                             style: new TextStyle(
-                                color: hexToColor("#F2A03D"), fontSize: 25.0),),
+                                color: hexToColor("#F2A03D"),
+                                fontSize: 17.0,
+                                ),
+                          ),
                           new Padding(padding: EdgeInsets.only(top: 10.0)),
                           new TextField(
                             onChanged: (String value) {
@@ -88,7 +127,7 @@ class _MyAppState extends State<MyApp> {
                               labelText: "Enter URL",
                               fillColor: Colors.white,
                               border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(25.0),
+                                borderRadius: new BorderRadius.circular(10.0),
                                 borderSide: new BorderSide(
                                 ),
                               ),
@@ -108,29 +147,34 @@ class _MyAppState extends State<MyApp> {
                                 child: Text('Add to Blacklist')
                             ),
                           ),
-//                          StreamBuilder(
-//                            stream: Firestore.instance.collection("blacklists")
-//                                .document("eric123")
-//                                .snapshots(),
-//                            builder: (context, snapshot) {
-//                              if (!snapshot.hasData)
-//                                return const Text("Loading...");
-//                              return ListView.builder(
-//                                itemBuilder: (BuildContext ctxt, int index) {
-//                                  return new Text(
-//                                      snapshot.data.documents[index]);
-//                                },
-//                                itemExtent: 80.0,
-//                                itemCount: snapshot.data.documents.length,);
-//                            },
-//                          )
-                            Column(children: _urls.map((element) => Card(
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(element)
-                                  ],
-                                )
-                            ),).toList(),)
+                          new Text('(Press and hold any list item to delete it)'),
+                          new Expanded(
+                              child: new ListView.builder(
+                                  itemCount: _urls.length,
+                                  itemBuilder: (context, index) {
+                                    return Card(
+                                        child: ListTile(
+                                          title: Text((index+1).toString()),
+                                          subtitle: Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                    padding: EdgeInsets.fromLTRB(0, 5.0, 12.0, 5.0),
+                                                    child: Text(_urls.elementAt(index))
+                                                ),
+                                              ]
+                                          ),
+                                          onLongPress: () {
+                                            setState(() {
+                                              _urls.removeAt(index);
+                                            });
+                                            updateUrlList();
+                                          },
+                                        )
+                                    );
+                                  }
+                              )
+                          ),
+
                         ]
                     ),
                   )
