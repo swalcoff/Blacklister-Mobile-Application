@@ -31,7 +31,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'login_signup_page.dart';
 import 'login.dart';
 
-void main() => runApp(new LoginPage(title: 'login'));
+void main() => runApp(App());
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Title',
+      home: LoginPage(title: 'login'),
+    );
+  }
+}
 
 class MyApp extends StatefulWidget{
   @override
@@ -161,7 +171,7 @@ class _MyAppState extends State<MyApp> {
                                               children: <Widget>[
                                                 Padding(
                                                     padding: EdgeInsets.fromLTRB(0, 5.0, 12.0, 5.0),
-                                                    child: Text(_urls.elementAt((index - _urls.length).abs()))
+                                                    child: Text(_urls.elementAt((index).abs()))
                                                 ),
                                               ]
                                           ),

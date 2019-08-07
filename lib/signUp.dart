@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'server.dart';
-//import 'home.dart';
 import 'main.dart';
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.title}) : super(key: key);
@@ -52,7 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
               obscureText: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: ' Comfirm Password',
+                labelText: ' Confirm Password',
               ),
             ),
 
