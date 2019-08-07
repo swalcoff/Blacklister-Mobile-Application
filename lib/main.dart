@@ -28,8 +28,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'login_signup_page.dart';
+import 'login.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(new LoginPage(title: 'login'));
 
 class MyApp extends StatefulWidget{
   @override
@@ -159,7 +161,7 @@ class _MyAppState extends State<MyApp> {
                                               children: <Widget>[
                                                 Padding(
                                                     padding: EdgeInsets.fromLTRB(0, 5.0, 12.0, 5.0),
-                                                    child: Text(_urls.elementAt(index))
+                                                    child: Text(_urls.elementAt((index - _urls.length).abs()))
                                                 ),
                                               ]
                                           ),
