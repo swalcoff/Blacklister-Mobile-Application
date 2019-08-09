@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'signUp.dart';
 import 'server.dart';
 import 'main.dart';
+
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
-
 
   final String title;
 
@@ -17,6 +17,76 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  Widget _showEmailInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      child: new TextFormField(
+        controller: usernameController,
+        maxLines: 1,
+        keyboardType: TextInputType.emailAddress,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Email',
+            icon: new Icon(
+              Icons.mail,
+              color: Colors.grey,
+            )),
+        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+//        onSaved: (value) => _email = value.trim(),
+      ),
+    );
+  }
+
+  Widget _showPasswordInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+        controller: passwordController,
+        maxLines: 1,
+        obscureText: true,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Password',
+            icon: new Icon(
+              Icons.lock,
+              color: Colors.grey,
+            )),
+        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+//        onSaved: (value) => _password = value.trim(),
+      ),
+    );
+  }
+
+  Widget _showPrimaryButton() {
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+        child: SizedBox(
+          height: 40.0,
+          child: new RaisedButton(
+            elevation: 5.0,
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(100.0)),
+            color: Colors.blue,
+            child:new Text('Login', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+            onPressed: () {
+              server
+                  .signIn(usernameController.text, passwordController.text)
+                  .then(
+                (uid) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp()),
+                  );
+                },
+              ).catchError((e) {
+                ;
+                print("failed to login");
+              });
+            },
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,66 +95,25 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Center(
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'login times',
-            ),
-
-            TextField(
-              obscureText: false,
-              controller: usernameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Username',
-              ),
-            ),
-            TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-            ),
-            RaisedButton(
-              onPressed: () {
-                server.signIn(usernameController.text, passwordController.text)
-                    .then((uid) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MyApp()),
-                  );
-                },).catchError((e) {
-                  ;
-                  print("failed to login");
-                });
-              },
-              child: const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 20)
-              ),
-            ),
+            Text('login times'),
+            _showEmailInput(),
+            _showPasswordInput(),
+            _showPrimaryButton(),
             RaisedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SignUpPage(title:'SignUp')),
+                  MaterialPageRoute(
+                      builder: (context) => SignUpPage(title: 'SignUp')),
                 );
               },
-              child: const Text(
-                  'Sign Up',
-                  style: TextStyle(fontSize: 20)
-              ),
+              child: const Text('Sign Up', style: TextStyle(fontSize: 20)),
             ),
           ],
         ),
       ),
-
     );
   }
 }
-
-

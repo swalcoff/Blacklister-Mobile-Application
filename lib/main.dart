@@ -171,13 +171,13 @@ class _MyAppState extends State<MyApp> {
                                               children: <Widget>[
                                                 Padding(
                                                     padding: EdgeInsets.fromLTRB(0, 5.0, 12.0, 5.0),
-                                                    child: Text(_urls.elementAt((index).abs()))
+                                                    child: Text((_urls.reversed).elementAt((index).abs()))
                                                 ),
                                               ]
                                           ),
                                           onLongPress: () {
                                             setState(() {
-                                              _urls.removeAt(index);
+                                              _urls.removeAt((index - _urls.length + 1).abs());
                                             });
                                             updateUrlList();
                                           },
@@ -186,7 +186,6 @@ class _MyAppState extends State<MyApp> {
                                   }
                               )
                           ),
-
                         ]
                     ),
                   )
