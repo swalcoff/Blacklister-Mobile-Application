@@ -59,6 +59,9 @@ class _MyAppState extends State<MyApp> {
 
   Map<String, dynamic> docData;
 
+  bool switchOn;
+
+
   @override
   void initState() {
     super.initState();
@@ -67,6 +70,7 @@ class _MyAppState extends State<MyApp> {
       print(ds.data);
       docData = ds.data;
       setState(() {
+        switchOn = docData["enabled"];
         _urls = [];
         for (var url in docData["list"]) {
           _urls.add(url);
@@ -160,6 +164,19 @@ class _MyAppState extends State<MyApp> {
                             ),
                           ),
                           new Text('(Press and hold any list item to delete it)'),
+                          new Switch(
+                                 value: switchOn,
+                                 onChanged: (value){
+                                   setState(() {
+                                     switchOn = value;
+                                   });
+                                   docData['enabled'] = value;
+                                   Firestore.instance.collection("blacklists").document("eric123").updateData(docData).then((v){
+                                     print("successfully updated it.");
+                                     }).catchError((e){
+                                                                       print("failed to update it");
+                                                                    });
+                                                            }),
                           new Expanded(
                               child: new ListView.builder(
                                   itemCount: _urls.length,
