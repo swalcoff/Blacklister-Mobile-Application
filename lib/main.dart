@@ -38,7 +38,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Title',
-      home: LoginPage(title: 'login'),
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(
+        brightness: Brightness.dark,
+      ),
+      home: LoginPage(title: 'Login to Blacklister'),
     );
   }
 }
@@ -118,8 +122,19 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Welcome to Flutter",
-        home: new Material(
-            child: new Container (
+        home: new Scaffold(
+            appBar: AppBar(
+              title: Text('Edit your blacklist'),
+              backgroundColor: Colors.black,
+              actions: <Widget>[
+                new IconButton(icon: new Icon(Icons.lock_open),
+                  onPressed: (){
+
+                  },
+                ),
+              ],
+            ),
+            body: new Container (
               padding: const EdgeInsets.all(30.0),
               color: Colors.white,
               child: new Container(
@@ -130,7 +145,7 @@ class _MyAppState extends State<MyApp> {
                           new Text(
                             'Add to the blacklist by entering a URL below',
                             style: new TextStyle(
-                                color: hexToColor("#F2A03D"),
+                                color: Colors.black,
                                 fontSize: 17.0,
                                 ),
                           ),

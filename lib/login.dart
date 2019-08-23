@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
       child: new TextFormField(
         controller: usernameController,
         maxLines: 1,
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(100.0)),
-            color: Colors.blue,
+            color: Colors.black,
             child:new Text('Login', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: () {
               server
@@ -86,6 +86,33 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ));
   }
+  Widget _showSecondaryButton() {
+    return new FlatButton(
+      child: new Text('Create an account',
+          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SignUpPage(title: 'Sign Up')),
+        );
+      },
+    );
+  }
+
+  Widget _showLogo() {
+    return new Hero(
+      tag: 'logo',
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 100.0,
+          child: Image.asset('assets/blacklisterLogo.png'),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,24 +121,17 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('login times'),
-            _showEmailInput(),
-            _showPasswordInput(),
-            _showPrimaryButton(),
-            RaisedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SignUpPage(title: 'SignUp')),
-                );
-              },
-              child: const Text('Sign Up', style: TextStyle(fontSize: 20)),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _showLogo(),
+              _showEmailInput(),
+              _showPasswordInput(),
+              _showPrimaryButton(),
+              _showSecondaryButton(),
+            ],
+          ),
         ),
       ),
     );
