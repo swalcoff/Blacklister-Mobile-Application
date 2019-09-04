@@ -48,17 +48,26 @@ class App extends StatelessWidget {
 }
 
 class MyApp extends StatefulWidget{
+  final String username;
+  MyApp(this.username);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _MyAppState();
+    return _MyAppState(username);
   }
 }
+
+
 class _MyAppState extends State<MyApp> {
+  final String username;
+  _MyAppState(this.username);
+
+
   String _text = '';
+
 //  List<String> _urls = ["one", "two", "three"];
 
-  static Stream<DocumentSnapshot> ds = Firestore.instance.collection("blacklist").document("eric123").snapshots(); //['first url', 'second url', 'third url'];
+  static Stream<DocumentSnapshot> ds = Firestore.instance.collection("blacklists").document(username).snapshots(); //['first url', 'second url', 'third url'];
   List<String> _urls = [];
 
   Map<String, dynamic> docData;
@@ -69,7 +78,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Firestore.instance.collection("blacklists").document("eric123").get().then((ds){
+    Firestore.instance.collection("blacklists").document(username).get().then((ds){
       print(ds.documentID);
       print(ds.data);
       docData = ds.data;
@@ -129,7 +138,13 @@ class _MyAppState extends State<MyApp> {
               actions: <Widget>[
                 new IconButton(icon: new Icon(Icons.lock_open),
                   onPressed: (){
-
+                    initState();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(title: 'Login to Blacklister')
+                        ),
+                    );
                   },
                 ),
               ],

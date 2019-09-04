@@ -14,8 +14,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   Server server = new Server();
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  static TextEditingController usernameController = TextEditingController();
+  static TextEditingController passwordController = TextEditingController();
+
+
 
   Widget _showEmailInput() {
     return Padding(
@@ -75,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                 (uid) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyApp()),
+                    MaterialPageRoute(builder: (context) => MyApp(usernameController.toString())),
                   );
                 },
               ).catchError((e) {
