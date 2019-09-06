@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                 (uid) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyApp(usernameController.toString())),
+                    MaterialPageRoute(builder: (context) => MyApp(usernameController.text)),
                   );
                 },
               ).catchError((e) {

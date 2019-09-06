@@ -85,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           print("successfully printed UID is: " + uid);
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
+                            MaterialPageRoute(builder: (context) => MyApp(usernameController.text)),
                           );
                         })
                             .catchError((e){
