@@ -1,6 +1,6 @@
 # Blacklister Mobile Application
 
-This is the mobile application side of Blacklister. This application allows you to choose which websites the desktop/laptop user is allowed to access.
+This is the mobile application side of Blacklister. This application allows you to choose which websites the desktop/laptop user is allowed to access. If you'd like to view the desktop application, you can follow this link: https://github.com/swalcoff/Blacklister-Java-Application
 
 ## Getting Started
 
